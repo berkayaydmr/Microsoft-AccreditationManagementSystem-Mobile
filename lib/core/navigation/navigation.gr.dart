@@ -15,12 +15,6 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
-    DashboardViewRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const DashboardView(),
-      );
-    },
     LearningPathViewRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -39,33 +33,25 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const MipView(),
       );
     },
-    EngineerViewRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const EngineerView(),
-      );
-    },
     MipDetailViewRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const MipDetailView(),
       );
     },
+    DashboardViewRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const DashboardView(),
+      );
+    },
+    EngineerViewRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const EngineerView(),
+      );
+    },
   };
-}
-
-/// generated route for
-/// [DashboardView]
-class DashboardViewRoute extends PageRouteInfo<void> {
-  const DashboardViewRoute({List<PageRouteInfo>? children})
-      : super(
-          DashboardViewRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'DashboardViewRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -111,20 +97,6 @@ class MipViewRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [EngineerView]
-class EngineerViewRoute extends PageRouteInfo<void> {
-  const EngineerViewRoute({List<PageRouteInfo>? children})
-      : super(
-          EngineerViewRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'EngineerViewRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
 /// [MipDetailView]
 class MipDetailViewRoute extends PageRouteInfo<void> {
   const MipDetailViewRoute({List<PageRouteInfo>? children})
@@ -134,6 +106,34 @@ class MipDetailViewRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'MipDetailViewRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [DashboardView]
+class DashboardViewRoute extends PageRouteInfo<void> {
+  const DashboardViewRoute({List<PageRouteInfo>? children})
+      : super(
+          DashboardViewRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'DashboardViewRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [EngineerView]
+class EngineerViewRoute extends PageRouteInfo<void> {
+  const EngineerViewRoute({List<PageRouteInfo>? children})
+      : super(
+          EngineerViewRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'EngineerViewRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

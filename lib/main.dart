@@ -21,7 +21,10 @@ Future main() async {
   runZoned(
         () {
       runApp(
-        const MyApp(),
+        MultiRepositoryProvider(
+            providers: DependencyInjector.instance.repositoryProviders,
+            child: const MyApp()
+        ),
       );
     },
   );
