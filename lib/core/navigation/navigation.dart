@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../../ui/accreditation/accreditation_view.dart';
 import '../../ui/dashboard/dashboard_view.dart';
+import '../../ui/engineer/engineer_detail.dart';
 import '../../ui/engineer/engineer_view.dart';
 import '../../ui/learning_path/learning_path_view.dart';
 import '../../ui/mip/mip_detail_view.dart';
@@ -45,6 +46,9 @@ class AppRouter extends _$AppRouter {
         path: '/mip/:id',
         page: MipDetailViewRoute.page
     ),
+    AutoRoute(
+        path: '/engineer/:id',
+        page: EngineerDetailViewRoute.page)
   ];
 }
 

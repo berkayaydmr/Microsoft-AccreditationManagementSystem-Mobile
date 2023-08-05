@@ -65,7 +65,7 @@ class _MyAppState extends State<MyApp> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           scrolledUnderElevation: 0,
-            iconTheme: IconThemeData(color: Colors.white),
+            iconTheme: IconThemeData(color: Colors.black),
           systemOverlayStyle: SystemUiOverlayStyle.dark
         )
       ),

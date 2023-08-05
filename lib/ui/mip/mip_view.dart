@@ -1,13 +1,14 @@
 import 'package:accreditation_management_system/core/base/functions/base_functions.dart';
+import 'package:accreditation_management_system/core/constants/microsoft_colors.dart';
 import 'package:accreditation_management_system/core/extensions/context_extensions.dart';
 import 'package:accreditation_management_system/core/navigation/navigation.dart';
 import 'package:accreditation_management_system/repository/mip_repository.dart';
-import 'package:accreditation_management_system/ui/shared/widget/head_title_widget.dart';
 import 'package:accreditation_management_system/ui/shared/widget/list_card.dart';
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../shared/widget/head_title_widget.dart';
 
 @RoutePage()
 class MipView extends StatefulWidget {
@@ -29,11 +30,11 @@ class _MipViewState extends State<MipView> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: Text("MIPs"),
-        flexibleSpace: appBarLinearGradient(),
+        title: const Text("MIPs", style: TextStyle(color: MicrosoftColor.RED),),
       ),
       body: Column(
         children: [
+          const HeadTitleWidget(titles: ["MIPs"]),
           Expanded(
             child:ListView.builder(
                 itemCount: 20,

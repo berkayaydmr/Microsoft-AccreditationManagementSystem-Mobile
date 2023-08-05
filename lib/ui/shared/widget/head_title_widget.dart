@@ -2,13 +2,14 @@ import 'package:accreditation_management_system/core/extensions/context_extensio
 import 'package:flutter/material.dart';
 
 class HeadTitleWidget extends StatelessWidget {
-  const HeadTitleWidget({super.key, required this.title});
-  final String title;
+  const HeadTitleWidget({super.key, required this.titles, this.hideButtons = false});
+  final List<String> titles;
+  final bool hideButtons;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: context.height * 0.05,
+      height: context.height * 0.08,
       padding: EdgeInsets.only(left: context.normalValue),
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -28,13 +29,27 @@ class HeadTitleWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title, style: context.textTheme.titleLarge!.copyWith(color: Colors.white),),
           Row(
             children: [
-              IconButton(onPressed: (){}, icon: Icon(Icons.add, color: Colors.white,)),
-              IconButton(onPressed: (){}, icon: Icon(Icons.filter_alt_outlined, color: Colors.white))
+              for (var title in titles)
+                if (title != titles.last)
+                  Row(
+                    children: [
+                      Text(title, style: context.textTheme.titleLarge!.copyWith(color: Colors.white),),
+                      const Icon(Icons.navigate_next, color: Colors.white,),
+                    ],
+                  )
+                else
+                Text(title, style: context.textTheme.titleLarge!.copyWith(color: Colors.white),),
             ],
-          )
+          ),
+          if(!hideButtons)
+            Row(
+              children: [
+                IconButton(onPressed: (){}, icon: Icon(Icons.add, color: Colors.white,)),
+                IconButton(onPressed: (){}, icon: Icon(Icons.filter_alt_outlined, color: Colors.white))
+              ],
+            )
         ],
       ),
     );

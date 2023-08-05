@@ -16,7 +16,7 @@ class ListCard extends StatelessWidget {
         onTap: onTap,
         child: Container(
           padding: EdgeInsets.only(left: context.normalValue, top: context.lowValue, bottom: context.lowValue, right: context.lowValue),
-          margin: EdgeInsets.only(left: context.lowValue, right: context.lowValue, top: context.lowValue),
+          margin: EdgeInsets.only(left: context.lowValue, right: context.lowValue, top: context.normalValue),
           width: context.width,
           decoration: BoxDecoration(
             borderRadius: context.radiusAll,
@@ -33,7 +33,7 @@ class ListCard extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(text, style: context.textTheme.displayLarge!.copyWith(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w300),),
+              Text(text, style: context.textTheme.displayLarge!.copyWith(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),),
               Icon(Icons.navigate_next, size: 50, color: Colors.white,)
             ],
           ),

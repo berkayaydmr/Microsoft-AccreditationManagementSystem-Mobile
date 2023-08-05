@@ -23,16 +23,16 @@ class DashboardView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: false,
-        title: Text("Accreditation Management System", style: context.textTheme.displayMedium!.copyWith(fontSize: 15, color: Colors.white),),
+        title: Image.asset(
+            ImageConstants.instance.logo,
+            height: context.height * 0.05,
+            cacheHeight: 100,
+        ),
         actions: [
-          IconButton(onPressed: (){}, icon: const Icon(Icons.person, color: Colors.white,)),
-          IconButton(icon: const Icon(Icons.logout, color: Colors.white,), onPressed: (){
+          IconButton(onPressed: (){}, icon: const Icon(Icons.person, color: Colors.black,)),
+          IconButton(icon: const Icon(Icons.logout, color: Colors.black,), onPressed: (){
           }),
         ],
-        flexibleSpace: appBarLinearGradient()
       ),
       body: SafeArea(
         child: Container(
