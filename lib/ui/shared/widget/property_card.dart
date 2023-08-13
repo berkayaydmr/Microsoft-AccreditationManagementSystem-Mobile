@@ -37,8 +37,8 @@ class PropertyCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(count, style: context.textTheme.displaySmall!.copyWith(color: Colors.white),),
-                  Text(title, style: context.textTheme.displayLarge!.copyWith(color: Colors.white, fontSize: 40, fontWeight: FontWeight.w300),),
+                  Text(count, style: context.textTheme.displaySmall!.copyWith(color: Colors.white,fontSize: 40),),
+                  Text(title, style: context.textTheme.displayLarge!.copyWith(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w300),),
                 ],
               ),
               Icon(Icons.navigate_next, size: 50, color: Colors.white,)

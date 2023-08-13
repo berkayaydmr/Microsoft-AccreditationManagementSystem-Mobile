@@ -22,9 +22,13 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     DashboardViewRoute.name: (routeData) {
+      final args = routeData.argsAs<DashboardViewRouteArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const DashboardView(),
+        child: DashboardView(
+          key: args.key,
+          username: args.username,
+        ),
       );
     },
     EngineerDetailViewRoute.name: (routeData) {
@@ -40,16 +44,43 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    EngineerEditViewRoute.name: (routeData) {
+      final args = routeData.argsAs<EngineerEditViewRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: EngineerEditView(
+          key: args.key,
+          engineerID: args.engineerID,
+        ),
+      );
+    },
     EngineerViewRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const EngineerView(),
       );
     },
+    LearningPathDetailViewRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const LearningPathDetailView(),
+      );
+    },
     LearningPathViewRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const LearningPathView(),
+      );
+    },
+    LoginViewRoute.name: (routeData) {
+      final args = routeData.argsAs<LoginViewRouteArgs>(
+          orElse: () => const LoginViewRouteArgs());
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: LoginView(
+          key: args.key,
+          onResult: args.onResult,
+        ),
       );
     },
     MipDetailViewRoute.name: (routeData) {
@@ -83,16 +114,40 @@ class AccreditationViewRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [DashboardView]
-class DashboardViewRoute extends PageRouteInfo<void> {
-  const DashboardViewRoute({List<PageRouteInfo>? children})
-      : super(
+class DashboardViewRoute extends PageRouteInfo<DashboardViewRouteArgs> {
+  DashboardViewRoute({
+    Key? key,
+    required String username,
+    List<PageRouteInfo>? children,
+  }) : super(
           DashboardViewRoute.name,
+          args: DashboardViewRouteArgs(
+            key: key,
+            username: username,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'DashboardViewRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<DashboardViewRouteArgs> page =
+      PageInfo<DashboardViewRouteArgs>(name);
+}
+
+class DashboardViewRouteArgs {
+  const DashboardViewRouteArgs({
+    this.key,
+    required this.username,
+  });
+
+  final Key? key;
+
+  final String username;
+
+  @override
+  String toString() {
+    return 'DashboardViewRouteArgs{key: $key, username: $username}';
+  }
 }
 
 /// generated route for
@@ -136,6 +191,44 @@ class EngineerDetailViewRouteArgs {
 }
 
 /// generated route for
+/// [EngineerEditView]
+class EngineerEditViewRoute extends PageRouteInfo<EngineerEditViewRouteArgs> {
+  EngineerEditViewRoute({
+    Key? key,
+    required int engineerID,
+    List<PageRouteInfo>? children,
+  }) : super(
+          EngineerEditViewRoute.name,
+          args: EngineerEditViewRouteArgs(
+            key: key,
+            engineerID: engineerID,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'EngineerEditViewRoute';
+
+  static const PageInfo<EngineerEditViewRouteArgs> page =
+      PageInfo<EngineerEditViewRouteArgs>(name);
+}
+
+class EngineerEditViewRouteArgs {
+  const EngineerEditViewRouteArgs({
+    this.key,
+    required this.engineerID,
+  });
+
+  final Key? key;
+
+  final int engineerID;
+
+  @override
+  String toString() {
+    return 'EngineerEditViewRouteArgs{key: $key, engineerID: $engineerID}';
+  }
+}
+
+/// generated route for
 /// [EngineerView]
 class EngineerViewRoute extends PageRouteInfo<void> {
   const EngineerViewRoute({List<PageRouteInfo>? children})
@@ -145,6 +238,20 @@ class EngineerViewRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'EngineerViewRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [LearningPathDetailView]
+class LearningPathDetailViewRoute extends PageRouteInfo<void> {
+  const LearningPathDetailViewRoute({List<PageRouteInfo>? children})
+      : super(
+          LearningPathDetailViewRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'LearningPathDetailViewRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -161,6 +268,44 @@ class LearningPathViewRoute extends PageRouteInfo<void> {
   static const String name = 'LearningPathViewRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [LoginView]
+class LoginViewRoute extends PageRouteInfo<LoginViewRouteArgs> {
+  LoginViewRoute({
+    Key? key,
+    void Function(bool)? onResult,
+    List<PageRouteInfo>? children,
+  }) : super(
+          LoginViewRoute.name,
+          args: LoginViewRouteArgs(
+            key: key,
+            onResult: onResult,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'LoginViewRoute';
+
+  static const PageInfo<LoginViewRouteArgs> page =
+      PageInfo<LoginViewRouteArgs>(name);
+}
+
+class LoginViewRouteArgs {
+  const LoginViewRouteArgs({
+    this.key,
+    this.onResult,
+  });
+
+  final Key? key;
+
+  final void Function(bool)? onResult;
+
+  @override
+  String toString() {
+    return 'LoginViewRouteArgs{key: $key, onResult: $onResult}';
+  }
 }
 
 /// generated route for

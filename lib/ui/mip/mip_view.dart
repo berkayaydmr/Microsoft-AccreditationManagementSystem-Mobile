@@ -31,10 +31,17 @@ class _MipViewState extends State<MipView> {
       appBar: AppBar(
         centerTitle: false,
         title: const Text("MIPs", style: TextStyle(color: MicrosoftColor.RED),),
+        actions: [
+          IconButton(
+            onPressed: () {
+              context.router.push(MipDetailViewRoute());
+            },
+            icon: const Icon(Icons.add),
+          ),
+        ],
       ),
       body: Column(
         children: [
-          const HeadTitleWidget(titles: ["MIPs"]),
           Expanded(
             child:ListView.builder(
                 itemCount: 20,

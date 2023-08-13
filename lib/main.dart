@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:io';
 
@@ -19,12 +18,11 @@ Future main() async {
   Bloc.observer = AppBlocObserver.instance;
   HttpOverrides.global = MyHttpOverrides();
   runZoned(
-        () {
+    () {
       runApp(
         MultiRepositoryProvider(
             providers: DependencyInjector.instance.repositoryProviders,
-            child: const MyApp()
-        ),
+            child: const MyApp()),
       );
     },
   );
@@ -61,14 +59,12 @@ class _MyAppState extends State<MyApp> {
       ),
       routeInformationParser: _appRouter.defaultRouteParser(),
       theme: ThemeData.light().copyWith(
-        appBarTheme: AppBarTheme(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          scrolledUnderElevation: 0,
-            iconTheme: IconThemeData(color: Colors.black),
-          systemOverlayStyle: SystemUiOverlayStyle.dark
-        )
-      ),
+          appBarTheme: const AppBarTheme(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              scrolledUnderElevation: 0,
+              iconTheme: IconThemeData(color: Colors.black),
+              systemOverlayStyle: SystemUiOverlayStyle.dark)),
       builder: (context, child) {
         ScreenUtil.init(
           context,
@@ -77,17 +73,20 @@ class _MyAppState extends State<MyApp> {
           // splitScreenMode: true,
         );
         return MediaQuery(
-            data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0, ),
+            data: MediaQuery.of(context).copyWith(
+              textScaleFactor: 1.0,
+            ),
             child: botToastBuilder.call(context, child));
       },
     );
   }
 }
 
-class MyHttpOverrides extends HttpOverrides{
+class MyHttpOverrides extends HttpOverrides {
   @override
-  HttpClient createHttpClient(SecurityContext? context){
+  HttpClient createHttpClient(SecurityContext? context) {
     return super.createHttpClient(context)
-      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }
