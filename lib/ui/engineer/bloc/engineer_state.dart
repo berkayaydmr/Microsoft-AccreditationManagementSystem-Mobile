@@ -15,7 +15,7 @@ class EngineerDetailLoading extends EngineerState {
 }
 
 class EngineerDetailSuccess extends EngineerState {
-  final EngineerResponseModel engineer;
+  final User engineer;
 
   EngineerDetailSuccess({required this.engineer});
 
@@ -61,7 +61,7 @@ class EngineerListLoading extends EngineerState {
 }
 
 class EngineerListSuccess extends EngineerState {
-  final List<EngineerResponseModel> engineers;
+  final List<User> engineers;
 
   EngineerListSuccess({required this.engineers});
 
@@ -84,7 +84,7 @@ class EngineerEditLoading extends EngineerState {
 }
 
 class EngineerEditSuccess extends EngineerState {
-  final EngineerResponseModel engineer;
+  final User engineer;
 
   EngineerEditSuccess({required this.engineer});
 
@@ -96,6 +96,29 @@ class EngineerEditFailure extends EngineerState {
   final String message;
 
   EngineerEditFailure({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+class EngineerAddLoading extends EngineerState {
+  @override
+  List<Object> get props => [];
+}
+
+class EngineerAddSuccess extends EngineerState {
+  final RegisterResponseModel registerResponseModel;
+
+  const EngineerAddSuccess({required this.registerResponseModel});
+
+  @override
+  List<Object> get props => [registerResponseModel];
+}
+
+class EngineerAddFailure extends EngineerState {
+  final String message;
+
+  const EngineerAddFailure({required this.message});
 
   @override
   List<Object> get props => [message];

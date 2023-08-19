@@ -25,9 +25,7 @@ class _EngineerViewState extends State<EngineerView> {
 
   @override
   void initState() {
-    _engineersBloc = EngineerBloc(
-        engineerRepository:
-            RepositoryProvider.of<IEngineerRepository>(context));
+    _engineersBloc = EngineerBloc(engineerRepository: RepositoryProvider.of<IEngineerRepository>(context));
 
     _engineersBloc!.add(EngineerListFetch());
     super.initState();
@@ -38,38 +36,48 @@ class _EngineerViewState extends State<EngineerView> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: Text("Engineers", style: TextStyle(color: MicrosoftColor.GREEN)),
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.add))],
+        title: const Text("Engineers", style: TextStyle(color: MicrosoftColor.GREEN)),
+        actions: [
+          IconButton(
+              onPressed: () {
+                context.router.push(const EngineerAddViewRoute());
+              },
+              icon: const Icon(Icons.add))
+        ],
       ),
       body: Column(
         children: [
           Expanded(
-            child: BlocBuilder<EngineerBloc, EngineerState>(
-              bloc: _engineersBloc,
-              builder: (context, state) {
-                if (state is EngineerListLoading) {
+            child: RefreshIndicator(
+              onRefresh: () async {
+                _engineersBloc!.add(EngineerListFetch());
+              },
+              child: BlocBuilder<EngineerBloc, EngineerState>(
+                bloc: _engineersBloc,
+                builder: (context, state) {
+                  if (state is EngineerListLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (state is EngineerListFailure) {
+                    return Center(child: Text(state.message));
+                  } else if (state is EngineerListSuccess) {
+                    return ListView.builder(
+                        itemCount: state.engineers.length,
+                        itemBuilder: (context, index) {
+                          return ListCard(
+                              text: "${state.engineers[index].firstName} ${state.engineers[index].lastName}" ?? "Unknown",
+                              cardColor: context.engineerColor,
+                              onTap: () {
+                                context.router.push(EngineerDetailViewRoute(engineerID: state.engineers[index].id!));
+                              });
+                        });
+                  }
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
-                } else if (state is EngineerListFailure) {
-                  return Center(child: Text(state.message));
-                } else if (state is EngineerListSuccess) {
-                  return ListView.builder(
-                      itemCount: state.engineers.length,
-                      itemBuilder: (context, index) {
-                        return ListCard(
-                            text: state.engineers[index].name ?? "Unknown",
-                            cardColor: context.engineerColor,
-                            onTap: () {
-                              context.router.push(EngineerDetailViewRoute(
-                                  engineerID: state.engineers[index].id!));
-                            });
-                      });
-                }
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              },
+                },
+              ),
             ),
           )
         ],

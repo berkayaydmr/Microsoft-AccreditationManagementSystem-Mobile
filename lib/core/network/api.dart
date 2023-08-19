@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 
+import '../constants/local_storage_constants.dart';
+import '../local_storage/local_storage_manager.dart';
+
 class Api {
   final dio = createDio();
-  //final tokenDio = Dio(BaseOptions(baseUrl: ''));
 
   Api._internal();
 
@@ -14,16 +16,14 @@ class Api {
 
   static Dio createDio() {
     var dio = Dio(BaseOptions(
-      baseUrl: 'http://20.86.130.57:32770/api/v1',
+      baseUrl: 'http://20.86.130.57:32768/api',
       receiveTimeout: const Duration(seconds: 10),
       connectTimeout: const Duration(seconds: 10),
       sendTimeout: const Duration(seconds: 10),
     ));
 
-    dio.interceptors.addAll({
-      AppInterceptors(dio),
-      RetryOnConnectionChangeInterceptor(dio: dio)
-    });
+    dio.interceptors.addAll(
+        {AppInterceptors(dio), RetryOnConnectionChangeInterceptor(dio: dio)});
 
     return dio;
   }
@@ -37,17 +37,39 @@ class AppInterceptors extends Interceptor {
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
+    var token =
+        await LocalStorageManager.getString(LocalStorageConstants.TOKEN);
+    if (token != null) {
+      /*var expiration = await TokenRepository().getAccessTokenRemainingTime();
+
+      if (expiration.inSeconds < 60) {
+        dio.interceptors.requestLock.lock();
+
+        // Call the refresh endpoint to get a new token
+        await UserService()
+            .refresh()
+            .then((response) async {
+          await TokenRepository().persistAccessToken(response.accessToken);
+          accessToken = response.accessToken;
+        }).catchError((error, stackTrace) {
+          handler.reject(error, true);
+        }).whenComplete(() => dio.interceptors.requestLock.unlock());
+      }
+      */
+
+      options.headers['Authorization'] = 'Bearer $token';
+    }
 
     return handler.next(options);
   }
 
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) {
-    switch (err.type) {
-      case DioErrorType.sendTimeout:
-      case DioErrorType.receiveTimeout:
+  void onError(DioException err, ErrorInterceptorHandler handler) {
+    switch (err.error) {
+      case DioException.sendTimeout:
+      case DioException.receiveTimeout:
         throw DeadlineExceededException(err.requestOptions);
-      case DioErrorType.badResponse:
+      case DioException.badResponse:
         switch (err.response?.statusCode) {
           case 400:
             throw BadRequestException(err.requestOptions);
@@ -91,7 +113,9 @@ class RetryOnConnectionChangeInterceptor extends Interceptor {
   void onError(DioError err, ErrorInterceptorHandler handler) async {
     if (_shouldRetryOnHttpException(err)) {
       try {
-        handler.resolve(await DioHttpRequestRetrier(dio: dio).requestRetry(err.requestOptions).catchError((e) {
+        handler.resolve(await DioHttpRequestRetrier(dio: dio)
+            .requestRetry(err.requestOptions)
+            .catchError((e) {
           handler.next(err);
         }));
       } catch (e) {
@@ -100,12 +124,13 @@ class RetryOnConnectionChangeInterceptor extends Interceptor {
     } else {
       handler.next(err);
     }
-
   }
 
   bool _shouldRetryOnHttpException(DioError err) {
     return err.type == DioErrorType.unknown &&
-        ((err.error is HttpException && err.message!.contains('Connection closed before full header was received')));
+        ((err.error is HttpException &&
+            err.message!.contains(
+                'Connection closed before full header was received')));
   }
 }
 
@@ -181,7 +206,8 @@ class UnauthorizedException extends DioError {
 }
 
 class NotFoundException extends DioError {
-  NotFoundException(RequestOptions r, Response? response) : super(requestOptions: r, response: response);
+  NotFoundException(RequestOptions r, Response? response)
+      : super(requestOptions: r, response: response);
 
   @override
   String toString() {

@@ -4,15 +4,17 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import '../../repository/models/engineer_response_model.dart';
+import '../../ui/accreditation/accreditation_detail_view.dart';
 import '../../ui/accreditation/accreditation_view.dart';
 import '../../ui/dashboard/dashboard_view.dart';
+import '../../ui/engineer/engineer_add_view.dart';
 import '../../ui/engineer/engineer_detail.dart';
 import '../../ui/engineer/engineer_edit_view.dart';
 import '../../ui/engineer/engineer_view.dart';
 import '../../ui/learning_path/learning_path_detail_view.dart';
 import '../../ui/learning_path/learning_path_view.dart';
 import '../../ui/login/login_view.dart';
+import '../../ui/mip/mip_add_view.dart';
 import '../../ui/mip/mip_detail_view.dart';
 import '../../ui/mip/mip_view.dart';
 
@@ -29,13 +31,18 @@ class AppRouter extends _$AppRouter {
     AutoRoute(path: '/login', page: LoginViewRoute.page, initial: true),
     AutoRoute(path: '/dashboard', page: DashboardViewRoute.page),
     AutoRoute(path: '/accreditation', page: AccreditationViewRoute.page),
-    AutoRoute(path: '/engineer', page: EngineerViewRoute.page),
     AutoRoute(path: '/learningPath', page: LearningPathViewRoute.page),
+    AutoRoute(
+        path: '/learningPath/:id', page: LearningPathDetailViewRoute.page),
     AutoRoute(path: '/mip', page: MipViewRoute.page),
     AutoRoute(path: '/mip/:id', page: MipDetailViewRoute.page),
+    AutoRoute(path: '/mip/add', page: MipAddViewRoute.page),
+    AutoRoute(path: '/engineer', page: EngineerViewRoute.page),
     AutoRoute(path: '/engineer/:id', page: EngineerDetailViewRoute.page),
     AutoRoute(path: '/engineer/:id/edit', page: EngineerEditViewRoute.page),
-    AutoRoute(path: '/learningPath/:id', page: LearningPathDetailViewRoute.page)
+    AutoRoute(path: '/engineer/add', page: EngineerAddViewRoute.page),
+    AutoRoute(
+        path: '/accreditation/:id', page: AccreditationDetailViewRoute.page)
   ];
 }
 

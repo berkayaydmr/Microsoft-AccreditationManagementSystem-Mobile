@@ -19,22 +19,25 @@ class MipView extends StatefulWidget {
 }
 
 class _MipViewState extends State<MipView> {
-
   @override
   void initState() {
     context.read<IMipRepository>().getAll();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: const Text("MIPs", style: TextStyle(color: MicrosoftColor.RED),),
+        title: const Text(
+          "MIPs",
+          style: TextStyle(color: MicrosoftColor.RED),
+        ),
         actions: [
           IconButton(
             onPressed: () {
-              context.router.push(MipDetailViewRoute());
+              context.router.push(MipAddViewRoute());
             },
             icon: const Icon(Icons.add),
           ),
@@ -43,14 +46,16 @@ class _MipViewState extends State<MipView> {
       body: Column(
         children: [
           Expanded(
-            child:ListView.builder(
+            child: ListView.builder(
                 itemCount: 20,
-                itemBuilder: (context,index){
-                  return ListCard(text: 'MIP $index', cardColor: context.mipColor, onTap: (){
-                    context.router.push(MipDetailViewRoute());
-                  });
-                }
-            ),
+                itemBuilder: (context, index) {
+                  return ListCard(
+                      text: 'MIP $index',
+                      cardColor: context.mipColor,
+                      onTap: () {
+                        context.router.push(MipDetailViewRoute());
+                      });
+                }),
           )
         ],
       ),

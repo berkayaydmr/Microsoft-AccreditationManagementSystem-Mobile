@@ -17,8 +17,7 @@ import 'bloc/engineer_bloc.dart';
 
 @RoutePage()
 class EngineerDetailView extends StatefulWidget {
-  const EngineerDetailView(
-      {super.key, @PathParam('id') required this.engineerID});
+  const EngineerDetailView({super.key, @PathParam('id') required this.engineerID});
   final int engineerID;
 
   @override
@@ -30,9 +29,7 @@ class _EngineerViewState extends State<EngineerDetailView> {
   late String username;
   @override
   void initState() {
-    _engineersDetailBloc = EngineerBloc(
-        engineerRepository:
-            RepositoryProvider.of<IEngineerRepository>(context));
+    _engineersDetailBloc = EngineerBloc(engineerRepository: RepositoryProvider.of<IEngineerRepository>(context));
     _engineersDetailBloc.add(EngineerDetailFetch(id: widget.engineerID));
     super.initState();
   }
@@ -50,80 +47,62 @@ class _EngineerViewState extends State<EngineerDetailView> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            children: [
-              BlocBuilder<EngineerBloc, EngineerState>(
-                  bloc: _engineersDetailBloc,
-                  builder: (context, state) {
-                    if (state is EngineerDetailSuccess) {
-                      username = state.engineer.name!;
-                      return HeadTitleWidget(
-                        titles: ["Engineers", username],
-                        hideButtons: true,
-                      );
-                    }
-                    return const SizedBox();
-                  }),
-              Container(
-                padding: context.edgeNormal,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    BlocBuilder<EngineerBloc, EngineerState>(
-                      bloc: _engineersDetailBloc,
-                      builder: (context, state) {
-                        if (state is EngineerDetailSuccess) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              //Mips
-                              FieldTitleWidget(
-                                  title: "Accreditations",
-                                  backgroundColor: context.accreditationColor),
-                              if (state.engineer.accreditations!.isNotEmpty)
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  padding: context.edgeNormal,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      BlocBuilder<EngineerBloc, EngineerState>(
+                        bloc: _engineersDetailBloc,
+                        builder: (context, state) {
+                          if (state is EngineerDetailSuccess) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                buildField("Name", "${state.engineer.firstName} ${state.engineer.lastName}", context.engineerColor),
                                 SizedBox(
-                                  height: context.height * 0.1,
-                                  child: ListView.builder(
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount:
-                                          state.engineer.accreditations!.length,
-                                      itemBuilder: (context, index) {
-                                        return Padding(
-                                          padding: context.edgeLow,
-                                          child: FilterChip(
-                                            label: const Text("MIP"),
-                                            onSelected: (bool value) {},
-                                          ),
-                                        );
-                                      }),
+                                  height: context.height * 0.02,
                                 ),
-                              if (state.engineer.accreditations!.isEmpty)
+                                buildField("Mail", state.engineer.email ?? "unknown-mail", context.engineerColor),
                                 SizedBox(
-                                    height: context.height * 0.1,
-                                    child: const Center(
-                                      child: Text("No Accreditations"),
-                                    )),
-                            ],
-                          );
-                        }
+                                  height: context.height * 0.02,
+                                ),
+                                buildField("User Role", getUserRole(state.engineer.userRole ?? 0), context.engineerColor),
+                                SizedBox(
+                                  height: context.height * 0.02,
+                                ),
+                                FieldTitleWidget(title: "Accreditations", backgroundColor: context.accreditationColor),
+                                /* if (state.engineer.accreditations!.isEmpty)
+                                  SizedBox(
+                                      height: context.height * 0.1,
+                                      child: const Center(
+                                        child: Text("No Accreditations"),
+                                      )),*/
+                              ],
+                            );
+                          }
 
-                        if (state is EngineerDetailLoading) {
-                          return SizedBox(
-                              height: context.height * 0.5,
-                              width: context.width * 0.5,
-                              child: const Center(
-                                child: CircularProgressIndicator(),
-                              ));
-                        }
-                        return const Center(
-                          child: Text("Error"),
-                        );
-                      },
-                    ),
-                  ],
+                          if (state is EngineerDetailLoading) {
+                            return SizedBox(
+                                height: context.height * 0.5,
+                                width: context.width * 0.5,
+                                child: const Center(
+                                  child: CircularProgressIndicator(),
+                                ));
+                          }
+                          return const Center(
+                            child: Text("Error"),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Padding(
             padding: EdgeInsets.only(bottom: context.height * 0.04),
@@ -141,11 +120,10 @@ class _EngineerViewState extends State<EngineerDetailView> {
                     bloc: _engineersDetailBloc,
                     builder: (context, state) {
                       if (state is EngineerDetailSuccess) {
-                        username = state.engineer.name!;
+                        username = state.engineer.firstName!;
                         return Text(
                           "Continue as $username",
-                          style: context.textTheme.bodyMedium!.copyWith(
-                              color: Colors.white, fontWeight: FontWeight.bold),
+                          style: context.textTheme.bodyMedium!.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
                         );
                       }
                       return const LoadingIndicator();
@@ -165,9 +143,35 @@ class _EngineerViewState extends State<EngineerDetailView> {
     );
   }
 
+  Widget buildField(String title, String value, Color headTitleColor) {
+    return Column(
+      children: [
+        FieldTitleWidget(title: title, backgroundColor: context.engineerColor),
+        SizedBox(
+          height: context.height * 0.01,
+        ),
+        Center(
+            child: Text(
+          value,
+          style: context.textTheme.headlineMedium!.copyWith(color: Colors.grey, fontSize: 25),
+        )),
+      ],
+    );
+  }
+
+  String getUserRole(int userRole) {
+    switch (userRole) {
+      case 1:
+        return "Engineer";
+      case 2:
+        return "Admin";
+      default:
+        return "Observer";
+    }
+  }
+
   void _switchEngineer() {
-    LocalStorageManager.setString(
-        LocalStorageConstants.USERNAME, widget.engineerID.toString());
+    LocalStorageManager.setString(LocalStorageConstants.USERNAME, widget.engineerID.toString());
     context.router.replaceAll([DashboardViewRoute(username: username)]);
   }
 
@@ -201,6 +205,6 @@ class _EngineerViewState extends State<EngineerDetailView> {
 
   void _deleteEngineer() {
     _engineersDetailBloc.add(EngineerDelete(id: widget.engineerID));
-    context.router.popUntilRouteWithPath('/engineers');
+    context.router.popUntilRouteWithPath('/engineer');
   }
 }

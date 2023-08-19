@@ -1,18 +1,20 @@
 import 'dart:convert';
 
+import 'package:accreditation_management_system/core/constants/local_storage_constants.dart';
+import 'package:accreditation_management_system/core/local_storage/local_storage_manager.dart';
+import 'package:accreditation_management_system/repository/models/post_user_request_model.dart';
+import 'package:accreditation_management_system/repository/models/register_response.dart';
+import 'package:accreditation_management_system/repository/models/user.dart';
+
 import '../../../../../core/network/api.dart';
-import 'models/engineer_response_model.dart';
-import 'models/post_engineer_request_model.dart';
 import 'models/put_engineer_request_model.dart';
 
 abstract class IEngineerRepository {
   IEngineerRepository();
-  Future<String> createEngineer(
-      CreateEngineerRequestModel createEngineerRequestModel);
-  Future<EngineerResponseModel> putEngineer(
-      PutEngineerRequestModel putEngineerRequestModel);
-  Future<List<EngineerResponseModel>> getEngineers();
-  Future<EngineerResponseModel> getEngineer(int id);
+  Future<RegisterResponseModel> createEngineer(PostUserRequestModel createEngineerRequestModel);
+  Future<User> putEngineer(PutEngineerRequestModel putEngineerRequestModel);
+  Future<List<User>> getEngineers(int pageIndex, int pageSize);
+  Future<User> getEngineer(int id);
   Future<String> deleteEngineer(String id);
 }
 
@@ -20,19 +22,17 @@ class EngineerRepository extends IEngineerRepository {
   EngineerRepository();
 
   @override
-  Future<String> createEngineer(
-      CreateEngineerRequestModel createEngineerRequestModel) async {
-    var response = await Api().dio.post("/engineers",
-        data: jsonEncode(createEngineerRequestModel.toJson()));
-    return response.data.toString();
+  Future<RegisterResponseModel> createEngineer(PostUserRequestModel createEngineerRequestModel) async {
+    var response = await Api().dio.post("/Auth/Register", data: createEngineerRequestModel.toJson());
+    var registerResponseModel = RegisterResponseModel.fromJson(response.data);
+    LocalStorageManager.setString(LocalStorageConstants.TOKEN, registerResponseModel.token.toString());
+    return registerResponseModel;
   }
 
   @override
-  Future<List<EngineerResponseModel>> getEngineers() {
-    var response = Api().dio.get("/engineers");
-    return response.then((value) => value.data
-        .map<EngineerResponseModel>((e) => EngineerResponseModel.fromJson(e))
-        .toList());
+  Future<List<User>> getEngineers(int pageIndex, int pageSize) {
+    var response = Api().dio.get("/Users?PageIndex=$pageIndex&PageSize=$pageSize");
+    return response.then((value) => value.data["items"].map<User>((e) => User.fromJson(e)).toList());
   }
 
   @override
@@ -42,17 +42,14 @@ class EngineerRepository extends IEngineerRepository {
   }
 
   @override
-  Future<EngineerResponseModel> getEngineer(int id) {
-    var response = Api().dio.get("/engineers/$id");
-    return response.then((value) => EngineerResponseModel.fromJson(value.data));
+  Future<User> getEngineer(int id) {
+    var response = Api().dio.get("/Users/$id");
+    return response.then((value) => User.fromJson(value.data));
   }
 
   @override
-  Future<EngineerResponseModel> putEngineer(
-      PutEngineerRequestModel putEngineerRequestModel) {
-    var response = Api()
-        .dio
-        .put("/engineers", data: jsonEncode(putEngineerRequestModel.toJson()));
-    return response.then((value) => EngineerResponseModel.fromJson(value.data));
+  Future<User> putEngineer(PutEngineerRequestModel putEngineerRequestModel) {
+    var response = Api().dio.put("/engineers", data: jsonEncode(putEngineerRequestModel.toJson()));
+    return response.then((value) => User.fromJson(value.data));
   }
 }

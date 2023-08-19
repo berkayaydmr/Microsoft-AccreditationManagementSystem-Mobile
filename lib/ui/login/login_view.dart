@@ -16,7 +16,8 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  final _nameController = TextEditingController();
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   void initState() {
@@ -35,41 +36,64 @@ class _LoginViewState extends State<LoginView> {
         child: Padding(
           padding: context.edgeNormal,
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            SizedBox(
-              height: context.height * .2,
-            ),
-            Image.asset(
-              ImageConstants.instance.logo,
-              width: 300,
-              cacheHeight: 200,
-            ),
-            SizedBox(
-              height: context.highValue,
-            ),
-            TextFormField(
-              controller: _nameController,
-              decoration: InputDecoration(
-                hintText: 'Adınız ve Soyadınız (örn:Berkay Aydemir)',
-                hintStyle: context.textTheme.titleMedium,
-                border: OutlineInputBorder(
-                  borderRadius: context.radiusAll,
-                ),
-                errorMaxLines: 3,
+            Expanded(
+              flex: 2,
+              child: Image.asset(
+                ImageConstants.instance.logo,
+                width: 300,
+                cacheHeight: 200,
               ),
             ),
-            SizedBox(
-              height: context.lowValue,
+            Expanded(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: _usernameController,
+                      decoration: InputDecoration(
+                        hintText: 'Username',
+                        hintStyle: context.textTheme.titleMedium,
+                        border: OutlineInputBorder(
+                          borderRadius: context.radiusAll,
+                        ),
+                        errorMaxLines: 3,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Expanded(
+                    child: TextFormField(
+                      controller: _passwordController,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        hintText: 'Password',
+                        hintStyle: context.textTheme.titleMedium,
+                        border: OutlineInputBorder(
+                          borderRadius: context.radiusAll,
+                        ),
+                        errorMaxLines: 3,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
             Expanded(
+              flex: 2,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          fixedSize: Size.fromWidth(context.width)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: context.radiusAll),
+                        fixedSize: Size.fromWidth(context.width),
+                      ),
                       onPressed: () {
-                        context.replaceRoute(
-                            DashboardViewRoute(username: _nameController.text));
+                        context.replaceRoute(DashboardViewRoute(
+                            username: _usernameController.text));
                       },
                       child: const Text(
                         'Giriş Yap',
@@ -82,7 +106,7 @@ class _LoginViewState extends State<LoginView> {
                           onPressed: () {
                             context.router.push(EngineerViewRoute());
                           },
-                          child: Text('Adınızı hatırlamıyor musunuz?')),
+                          child: Text('Giriş bilgilerimi unuttum')),
                     ],
                   ),
                 ],
@@ -96,7 +120,7 @@ class _LoginViewState extends State<LoginView> {
 
   void _login() async {
     await LocalStorageManager.setString(
-        LocalStorageConstants.USERNAME, _nameController.text);
+        LocalStorageConstants.USERNAME, _usernameController.text);
     widget.onResult?.call(true);
   }
 }

@@ -35,3 +35,12 @@ class EngineerEditButtonPressed extends EngineerEvent {
   @override
   List<Object> get props => [engineer];
 }
+
+class EngineerAddButtonPressed extends EngineerEvent {
+  final PostUserRequestModel engineer;
+
+  const EngineerAddButtonPressed({required this.engineer});
+
+  @override
+  List<Object> get props => [engineer];
+}

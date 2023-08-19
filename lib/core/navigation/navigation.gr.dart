@@ -15,6 +15,12 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    AccreditationDetailViewRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const AccreditationDetailView(),
+      );
+    },
     AccreditationViewRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -29,6 +35,12 @@ abstract class _$AppRouter extends RootStackRouter {
           key: args.key,
           username: args.username,
         ),
+      );
+    },
+    EngineerAddViewRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const EngineerAddView(),
       );
     },
     EngineerDetailViewRoute.name: (routeData) {
@@ -83,6 +95,12 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    MipAddViewRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const MipAddView(),
+      );
+    },
     MipDetailViewRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -96,6 +114,20 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
   };
+}
+
+/// generated route for
+/// [AccreditationDetailView]
+class AccreditationDetailViewRoute extends PageRouteInfo<void> {
+  const AccreditationDetailViewRoute({List<PageRouteInfo>? children})
+      : super(
+          AccreditationDetailViewRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'AccreditationDetailViewRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -148,6 +180,20 @@ class DashboardViewRouteArgs {
   String toString() {
     return 'DashboardViewRouteArgs{key: $key, username: $username}';
   }
+}
+
+/// generated route for
+/// [EngineerAddView]
+class EngineerAddViewRoute extends PageRouteInfo<void> {
+  const EngineerAddViewRoute({List<PageRouteInfo>? children})
+      : super(
+          EngineerAddViewRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'EngineerAddViewRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -306,6 +352,20 @@ class LoginViewRouteArgs {
   String toString() {
     return 'LoginViewRouteArgs{key: $key, onResult: $onResult}';
   }
+}
+
+/// generated route for
+/// [MipAddView]
+class MipAddViewRoute extends PageRouteInfo<void> {
+  const MipAddViewRoute({List<PageRouteInfo>? children})
+      : super(
+          MipAddViewRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'MipAddViewRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for

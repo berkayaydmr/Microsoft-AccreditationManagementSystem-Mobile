@@ -15,13 +15,6 @@ class DashboardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Color> microsoftColors = [
-      const Color(0xFFBA1A1A),
-      const Color(0xFF7FBA00),
-      const Color(0xFF00A4EF),
-      const Color(0xFFFFB900),
-    ];
-
     return Scaffold(
       appBar: AppBar(
         title: Image.asset(
@@ -41,23 +34,25 @@ class DashboardView extends StatelessWidget {
                 Icons.logout,
                 color: Colors.black,
               ),
-              onPressed: () {}),
+              onPressed: () {
+                context.router.replace(LoginViewRoute());
+              }),
         ],
       ),
       body: SafeArea(
         child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 2),
+          margin: const EdgeInsets.symmetric(horizontal: 2),
           child: Column(
             children: [
               Expanded(
                   child: TapAnimation(
                 child: Container(
-                  margin: EdgeInsets.all(2),
+                  margin: const EdgeInsets.all(2),
                   padding: context.edgeLow,
                   width: context.width,
                   decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [microsoftColors[0], microsoftColors[2]],
+                        colors: [context.mipColor, context.learningPathColor],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
@@ -92,13 +87,12 @@ class DashboardView extends StatelessWidget {
                                 child: GestureDetector(
                                     onTap: () {},
                                     child: buildBox(
-                                        context, microsoftColors[0], 'MIPs',
-                                        () {
+                                        context, context.mipColor, 'MIPs', () {
                                       context.router.push(MipViewRoute());
                                     }))),
                             Expanded(
                                 child: buildBox(
-                                    context, microsoftColors[1], 'Engineers',
+                                    context, context.engineerColor, 'Engineers',
                                     () {
                               context.router.push(EngineerViewRoute());
                             })),
@@ -106,15 +100,15 @@ class DashboardView extends StatelessWidget {
                         ),
                       ),
                       Expanded(
-                          child: buildBox(
-                              context, microsoftColors[2], 'Learning\nPaths',
-                              () {
+                          child: buildBox(context, context.learningPathColor,
+                              'Learning\nPaths', () {
                         context.router.push(LearningPathViewRoute());
                       })),
                     ],
                   )),
               Expanded(
-                  child: buildBox(context, microsoftColors[3], 'Accreditations',
+                  child: buildBox(
+                      context, context.accreditationColor, 'Accreditations',
                       () {
                 context.router.push(AccreditationViewRoute());
               })),
