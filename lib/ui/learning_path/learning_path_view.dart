@@ -22,7 +22,7 @@ class _LearningPathViewState extends State<LearningPathView> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: Text("Learning Paths", style: TextStyle(color: MicrosoftColor.BLUE)),
+        title: Text("Learning Paths", style: TextStyle(color: context.learningPathColor)),
       ),
       body: Column(
         children: [

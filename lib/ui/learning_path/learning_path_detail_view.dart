@@ -34,33 +34,14 @@ class LearningPathDetailView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Image.asset(
-          ImageConstants.instance.logo,
-          height: context.height * 0.05,
-          cacheHeight: 100,
-        ),
+        centerTitle: false,
+        title: Text("Learning Paths > 1", style: TextStyle(color: context.learningPathColor)),
+        actions: [
+          IconButton(onPressed: (){}, icon: Icon(Icons.add))
+        ],
       ),
       body: Column(
         children: [
-          const Expanded(
-              flex: 1,
-              child: HeadTitleWidget(
-                titles: ["Learning Paths", "Learning Path 1"],
-                hideButtons: true,
-              )),
-          SizedBox(
-            height: context.height * 0.01,
-          ),
-          Expanded(
-              flex: 2,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  menuButton("Add Step", Icons.add, () {}),
-                  menuButton("Edit", Icons.edit, () {}),
-                  menuButton("Delete", Icons.delete, () {}),
-                ],
-              )),
           Expanded(
             flex: 10,
             child: learningStepsList(),

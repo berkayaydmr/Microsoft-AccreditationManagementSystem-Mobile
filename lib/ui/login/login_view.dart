@@ -16,6 +16,7 @@ import '../../core/local_storage/local_storage_manager.dart';
 class LoginView extends StatefulWidget {
   LoginView({Key? key, this.onResult}) : super(key: key);
   late ValueChanged<bool>? onResult;
+
   @override
   State<LoginView> createState() => _LoginViewState();
 }
@@ -23,120 +24,143 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>(); // Add form key
 
   late LoginBloc _loginBloc;
 
   @override
   void initState() {
-    _loginBloc = LoginBloc(userRepository: RepositoryProvider.of<IUserRepository>(context));
+    _loginBloc =
+        LoginBloc(userRepository: RepositoryProvider.of<IUserRepository>(context));
     super.initState();
   }
 
   @override
   void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    _loginBloc.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
+      body: SingleChildScrollView(
+        child: Container(
+          height: context.height,
           padding: context.edgeNormal,
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Expanded(
-              flex: 2,
-              child: Image.asset(
-                ImageConstants.instance.logo,
-                width: 300,
-                cacheHeight: 200,
-              ),
-            ),
-            Expanded(
-              child: Column(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: _usernameController,
-                      decoration: InputDecoration(
-                        hintText: 'Kullanıcı Adı',
-                        hintStyle: context.textTheme.titleMedium,
-                        border: OutlineInputBorder(
-                          borderRadius: context.radiusAll,
-                        ),
-                        errorMaxLines: 3,
-                      ),
+          child: Form( // Wrap your content with Form widget
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  ImageConstants.instance.logo,
+                  width: 300,
+                  cacheHeight: 200,
+                ),
+                SizedBox(height: 50),
+                TextFormField(
+                  controller: _usernameController,
+                  decoration: InputDecoration(
+                    hintText: 'Email',
+                    hintStyle: context.textTheme.titleMedium,
+                    border: OutlineInputBorder(
+                      borderRadius: context.radiusAll,
                     ),
+                    errorMaxLines: 3,
+                    icon: Icon(Icons.email), // Add icon
                   ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Expanded(
-                    child: TextFormField(
-                      controller: _passwordController,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        hintText: 'Şifre',
-                        hintStyle: context.textTheme.titleMedium,
-                        border: OutlineInputBorder(
-                          borderRadius: context.radiusAll,
-                        ),
-                        errorMaxLines: 3,
-                      ),
+                  validator: (value) {
+                    if (value?.isEmpty ?? true) {
+                      return 'Please enter your email';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 10),
+                TextFormField(
+                  controller: _passwordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    hintText: 'Şifre',
+                    hintStyle: context.textTheme.titleMedium,
+                    border: OutlineInputBorder(
+                      borderRadius: context.radiusAll,
                     ),
+                    errorMaxLines: 3,
+                    icon: Icon(Icons.lock), // Add icon
                   ),
-                ],
-              ),
+                  validator: (value) {
+                    if (value?.isEmpty ?? true) {
+                      return 'Please enter your password';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: context.radiusAll,
+                    ),
+                    fixedSize: Size.fromWidth(context.width),
+                  ),
+                  onPressed: _login,
+                  child: const Text(
+                    'Giriş Yap',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                SizedBox(height: 10),
+                TextButton(onPressed: register, child: Text('Kayıt Olun')),
+                TextButton(
+                  onPressed: () {
+                    context.router.push(EngineerViewRoute());
+                  },
+                  child: Text('Giriş bilgilerimi unuttum'),
+                ),
+              ],
             ),
-            Expanded(
-              flex: 2,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(borderRadius: context.radiusAll),
-                        fixedSize: Size.fromWidth(context.width),
-                      ),
-                      onPressed: _login,
-                      child: const Text(
-                        'Giriş Yap',
-                        style: TextStyle(color: Colors.white),
-                      )),
-                  Column(
-                    children: [
-                      TextButton(onPressed: register, child: Text('Kayıt Olun')),
-                      TextButton(
-                          onPressed: () {
-                            context.router.push(EngineerViewRoute());
-                          },
-                          child: Text('Giriş bilgilerimi unuttum')),
-                    ],
-                  ),
-                ],
-              ),
-            )
-          ]),
+          ),
         ),
       ),
     );
   }
 
-  void _login() async {
-    _loginBloc.add(LoginButtonPressed(loginRequest: LoginRequestModel(email: _usernameController.text, password: _passwordController.text, authenticatorCode: "authCode")));
+  void _login() {
+    if (_formKey.currentState?.validate() ?? false) {
+      _loginBloc.add(LoginButtonPressed(
+        loginRequest: LoginRequestModel(
+          email: _usernameController.text,
+          password: _passwordController.text,
+          authenticatorCode: "authCode",
+        ),
+      ));
 
-    _loginBloc.stream.listen((event) {
-      if (event is LoginFailure) {
-        BotToast.showText(text: event.error);
-      }
+      _loginBloc.stream.listen((event) {
+        if (event is LoginFailure) {
+          BotToast.showText(text: event.error);
+        }
 
-      if (event is LoginSuccess) {
-        context.replaceRoute(DashboardViewRoute(username: _usernameController.text));
-      }
-    });
+        if (event is LoginSuccess) {
+          context.replaceRoute(DashboardViewRoute(username: _extractUsername(_usernameController.text)));
+        }
+      });
+    }
   }
 
   void register() {
     context.router.push(EngineerAddViewRoute());
+  }
+
+  String _extractUsername(String email) {
+    int atIndex = email.indexOf('@');
+    if (atIndex != -1) {
+      return email.substring(0, atIndex);
+    } else {
+      return email;
+    }
   }
 }
