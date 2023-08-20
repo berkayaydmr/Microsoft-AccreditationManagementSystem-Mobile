@@ -28,8 +28,7 @@ class _EngineerAddViewState extends State<EngineerAddView> {
 
   @override
   void initState() {
-    _engineerBloc =
-        EngineerBloc(engineerRepository: RepositoryProvider.of<IUserRepository>(context));
+    _engineerBloc = EngineerBloc(engineerRepository: RepositoryProvider.of<IUserRepository>(context));
     super.initState();
   }
 
@@ -37,21 +36,22 @@ class _EngineerAddViewState extends State<EngineerAddView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Kayıt Ol", style: TextStyle(color: Colors.black),),
+        title: Image.asset(ImageConstants.instance.logo, height: context.height * 0.05, cacheHeight: 100),
       ),
       body: Container(
         padding: context.edgeNormalHorizontal,
         child: Form(
           key: _formKey,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: 50,),
-              Image.asset(
-                ImageConstants.instance.logo,
-                height: context.height * 0.1,
-                cacheHeight: 200,
+              Text(
+                "Kayıt Ol",
+                style: context.textTheme.headlineMedium,
               ),
-              SizedBox(height: 25,),
+              SizedBox(
+                height: 20,
+              ),
               Column(
                 children: [
                   _buildTextField(
@@ -83,7 +83,9 @@ class _EngineerAddViewState extends State<EngineerAddView> {
                   ),
                 ],
               ),
-              SizedBox(height: 25,),
+              SizedBox(
+                height: 25,
+              ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
@@ -114,15 +116,15 @@ class _EngineerAddViewState extends State<EngineerAddView> {
         controller: controller,
         obscureText: obscureText,
         keyboardType: keyboardType,
-          decoration: InputDecoration(
-            hintText: hintText,
-            hintStyle: context.textTheme.titleMedium,
-            border: OutlineInputBorder(
-              borderRadius: context.radiusAll,
-            ),
-            errorMaxLines: 3,
-            icon: Icon(icon), // Add icon
+        decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: context.textTheme.titleMedium,
+          border: OutlineInputBorder(
+            borderRadius: context.radiusAll,
           ),
+          errorMaxLines: 3,
+          icon: Icon(icon), // Add icon
+        ),
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'Please enter a valid $hintText';

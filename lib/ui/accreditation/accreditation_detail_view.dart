@@ -33,8 +33,8 @@ class _AccreditationDetailViewState extends State<AccreditationDetailView> {
               Column(
                 children: [
                   FieldTitleWidget(
-                    title: "MIP Name",
-                    backgroundColor: context.accreditationColor,
+                    title: "Accredited MIP Name",
+                    backgroundColor: context.mipColor,
                   ),
                   const SizedBox(
                     height: 10,
@@ -44,8 +44,7 @@ class _AccreditationDetailViewState extends State<AccreditationDetailView> {
                     children: [
                       Text(
                         "Accreditation 1",
-                        style: context.textTheme.headlineMedium!
-                            .copyWith(color: Colors.grey),
+                        style: context.textTheme.headlineMedium!.copyWith(color: Colors.grey),
                       ),
                       IconButton(
                           onPressed: () {},
@@ -65,26 +64,21 @@ class _AccreditationDetailViewState extends State<AccreditationDetailView> {
                 children: [
                   FieldTitleWidget(
                     title: "MIP Description",
-                    backgroundColor: context.accreditationColor,
+                    backgroundColor: context.mipColor,
                   ),
                   SizedBox(
                     height: context.height * 0.02,
                   ),
                   Text(
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget ultricies ultrices, nunc nisl ultricies nunc, quis aliquam nisl nunc eu nisl. Donec euismod, nisl eget ultricies ultrices, nunc nisl ultricies nunc, quis aliquam nisl nunc eu nisl.",
-                    style: context.textTheme.bodyMedium!
-                        .copyWith(color: Colors.grey),
+                    style: context.textTheme.bodyMedium!.copyWith(color: Colors.grey),
                   ),
                 ],
               ),
               const SizedBox(
                 height: 15,
               ),
-              PropertyCard(
-                  title: 'Engineers',
-                  count: '10',
-                  cardColor: context.engineerColor,
-                  onTap: () {}),
+              PropertyCard(title: 'Engineers', count: '10', cardColor: context.engineerColor, onTap: () {}),
             ],
           ),
         ),

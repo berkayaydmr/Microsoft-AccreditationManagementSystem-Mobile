@@ -78,6 +78,16 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const LearningPathDetailView(),
       );
     },
+    LearningPathEditViewRoute.name: (routeData) {
+      final args = routeData.argsAs<LearningPathEditViewRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: LearningPathEditView(
+          key: args.key,
+          learningPathID: args.learningPathID,
+        ),
+      );
+    },
     LearningPathViewRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -300,6 +310,45 @@ class LearningPathDetailViewRoute extends PageRouteInfo<void> {
   static const String name = 'LearningPathDetailViewRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [LearningPathEditView]
+class LearningPathEditViewRoute
+    extends PageRouteInfo<LearningPathEditViewRouteArgs> {
+  LearningPathEditViewRoute({
+    Key? key,
+    required int learningPathID,
+    List<PageRouteInfo>? children,
+  }) : super(
+          LearningPathEditViewRoute.name,
+          args: LearningPathEditViewRouteArgs(
+            key: key,
+            learningPathID: learningPathID,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'LearningPathEditViewRoute';
+
+  static const PageInfo<LearningPathEditViewRouteArgs> page =
+      PageInfo<LearningPathEditViewRouteArgs>(name);
+}
+
+class LearningPathEditViewRouteArgs {
+  const LearningPathEditViewRouteArgs({
+    this.key,
+    required this.learningPathID,
+  });
+
+  final Key? key;
+
+  final int learningPathID;
+
+  @override
+  String toString() {
+    return 'LearningPathEditViewRouteArgs{key: $key, learningPathID: $learningPathID}';
+  }
 }
 
 /// generated route for

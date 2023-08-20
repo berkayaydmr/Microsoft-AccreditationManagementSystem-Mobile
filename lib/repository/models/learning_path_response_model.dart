@@ -1,4 +1,3 @@
-
 import 'learning_path_step_response_model.dart';
 
 class LearningPathResponseModel {
@@ -8,12 +7,7 @@ class LearningPathResponseModel {
   List<LearningPathStepResponseModel>? learningSteps;
   double? completionRate;
 
-  LearningPathResponseModel(
-      {this.id,
-        this.name,
-        this.mipID,
-        this.learningSteps,
-        this.completionRate});
+  LearningPathResponseModel({this.id, this.name, this.mipID, this.learningSteps, this.completionRate});
 
   LearningPathResponseModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -34,10 +28,19 @@ class LearningPathResponseModel {
     data['name'] = name;
     data['mipID'] = mipID;
     if (learningSteps != null) {
-      data['learningSteps'] =
-          learningSteps!.map((v) => v.toJson()).toList();
+      data['learningSteps'] = learningSteps!.map((v) => v.toJson()).toList();
     }
     data['completionRate'] = completionRate;
     return data;
   }
+
+  static List<LearningPathStepResponseModel> sampleLearningPathStepList = [
+    LearningPathStepResponseModel(id: 1, name: "Learning Step 1", isCompleted: true),
+    LearningPathStepResponseModel(id: 2, name: "Learning Step 2", isCompleted: false),
+    LearningPathStepResponseModel(id: 3, name: "Learning Step 3", isCompleted: false),
+    LearningPathStepResponseModel(id: 2, name: "Learning Step 2", isCompleted: false),
+    LearningPathStepResponseModel(id: 3, name: "Learning Step 3", isCompleted: false),
+    LearningPathStepResponseModel(id: 2, name: "Learning Step 2", isCompleted: false),
+    LearningPathStepResponseModel(id: 3, name: "Learning Step 3", isCompleted: false),
+  ];
 }
