@@ -107,7 +107,7 @@ class EngineerAddLoading extends EngineerState {
 }
 
 class EngineerAddSuccess extends EngineerState {
-  final RegisterResponseModel registerResponseModel;
+  final LoginResponseModel registerResponseModel;
 
   const EngineerAddSuccess({required this.registerResponseModel});
 

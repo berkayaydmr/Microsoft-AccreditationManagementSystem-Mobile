@@ -3,12 +3,15 @@ import 'package:accreditation_management_system/core/constants/microsoft_colors.
 import 'package:accreditation_management_system/core/extensions/context_extensions.dart';
 import 'package:accreditation_management_system/core/navigation/navigation.dart';
 import 'package:accreditation_management_system/repository/mip_repository.dart';
+import 'package:accreditation_management_system/ui/mip/bloc/mip_bloc.dart';
 import 'package:accreditation_management_system/ui/shared/widget/list_card.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../repository/models/mip.dart';
 import '../shared/widget/head_title_widget.dart';
+import '../shared/widget/nothing_to_show_widget.dart';
 
 @RoutePage()
 class MipView extends StatefulWidget {
@@ -19,9 +22,13 @@ class MipView extends StatefulWidget {
 }
 
 class _MipViewState extends State<MipView> {
+  late MipBloc _mipBloc;
+
   @override
   void initState() {
-    context.read<IMipRepository>().getAll();
+    _mipBloc = MipBloc(mipRepository: RepositoryProvider.of<IMipRepository>(context));
+    _mipBloc.add(MipFetchAll());
+
     super.initState();
   }
 
@@ -37,28 +44,45 @@ class _MipViewState extends State<MipView> {
         actions: [
           IconButton(
             onPressed: () {
-              context.router.push(MipAddViewRoute());
+              context.router.push(const MipAddViewRoute());
             },
             icon: const Icon(Icons.add),
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-                itemCount: 20,
-                itemBuilder: (context, index) {
-                  return ListCard(
-                      text: 'MIP $index',
-                      cardColor: context.mipColor,
-                      onTap: () {
-                        context.router.push(MipDetailViewRoute());
-                      });
-                }),
-          )
-        ],
-      ),
+      body: BlocBuilder<MipBloc, MipState>(
+          bloc: _mipBloc,
+          builder: (context, state) {
+            if (state is MipFetchAllSuccess) {
+              List<Mip> mips = state.mipList;
+              if (mips.isEmpty) {
+                return const NothingToShowWidget();
+              }
+
+              return Container(
+                padding: context.edgeLowVertical,
+                height: context.height,
+                child: ListView.builder(
+                    itemCount: mips.length,
+                    itemBuilder: (context, index) {
+                      return ListCard(
+                          text: 'MIP $index',
+                          cardColor: context.mipColor,
+                          onTap: () {
+                            context.router.push(MipDetailViewRoute());
+                          });
+                    }),
+              );
+            }
+
+            if (state is MipFetchAllFailure) {
+              return Center(
+                child: Text(state.message),
+              );
+            }
+
+            return const Center(child: CircularProgressIndicator());
+          }),
     );
   }
 }

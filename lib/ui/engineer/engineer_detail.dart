@@ -1,5 +1,6 @@
 import 'package:accreditation_management_system/core/extensions/context_extensions.dart';
 import 'package:accreditation_management_system/core/navigation/navigation.dart';
+import 'package:accreditation_management_system/ui/shared/widget/field_and_value_widget.dart';
 import 'package:accreditation_management_system/ui/shared/widget/field_title_widget.dart';
 import 'package:accreditation_management_system/ui/shared/widget/head_title_widget.dart';
 import 'package:accreditation_management_system/ui/shared/widget/property_card.dart';
@@ -12,7 +13,7 @@ import '../../core/components/indicator/loading_indicator.dart';
 import '../../core/constants/local_storage_constants.dart';
 import '../../core/constants/microsoft_colors.dart';
 import '../../core/local_storage/local_storage_manager.dart';
-import '../../repository/engineer_repository.dart';
+import '../../repository/user_repository.dart';
 import 'bloc/engineer_bloc.dart';
 
 @RoutePage()
@@ -29,7 +30,7 @@ class _EngineerViewState extends State<EngineerDetailView> {
   late String username;
   @override
   void initState() {
-    _engineersDetailBloc = EngineerBloc(engineerRepository: RepositoryProvider.of<IEngineerRepository>(context));
+    _engineersDetailBloc = EngineerBloc(engineerRepository: RepositoryProvider.of<IUserRepository>(context));
     _engineersDetailBloc.add(EngineerDetailFetch(id: widget.engineerID));
     super.initState();
   }
@@ -62,15 +63,20 @@ class _EngineerViewState extends State<EngineerDetailView> {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                buildField("Name", "${state.engineer.firstName} ${state.engineer.lastName}", context.engineerColor),
+                                FieldAndValueWidget(
+                                    title: "İsim",
+                                    value: "${state.engineer.firstName} ${state.engineer.lastName}",
+                                    headTitleColor: context.engineerColor),
                                 SizedBox(
                                   height: context.height * 0.02,
                                 ),
-                                buildField("Mail", state.engineer.email ?? "unknown-mail", context.engineerColor),
+                                FieldAndValueWidget(
+                                    title: "E-Posta", value: state.engineer.email ?? "unknown-mail", headTitleColor: context.engineerColor),
                                 SizedBox(
                                   height: context.height * 0.02,
                                 ),
-                                buildField("User Role", getUserRole(state.engineer.userRole ?? 0), context.engineerColor),
+                                FieldAndValueWidget(
+                                    title: "Rol", value: getUserRole(state.engineer.userRole ?? 0), headTitleColor: context.engineerColor),
                                 SizedBox(
                                   height: context.height * 0.02,
                                 ),
@@ -140,22 +146,6 @@ class _EngineerViewState extends State<EngineerDetailView> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget buildField(String title, String value, Color headTitleColor) {
-    return Column(
-      children: [
-        FieldTitleWidget(title: title, backgroundColor: context.engineerColor),
-        SizedBox(
-          height: context.height * 0.01,
-        ),
-        Center(
-            child: Text(
-          value,
-          style: context.textTheme.headlineMedium!.copyWith(color: Colors.grey, fontSize: 25),
-        )),
-      ],
     );
   }
 

@@ -10,3 +10,17 @@ class MipCreateButtonPressed extends MipEvent {
   @override
   List<Object> get props => [postMIPRequestModel];
 }
+
+class MipDetailFetch extends MipEvent {
+  late int mipID;
+
+  MipDetailFetch({required this.mipID});
+
+  @override
+  List<Object> get props => [mipID];
+}
+
+class MipFetchAll extends MipEvent {
+  @override
+  List<Object> get props => [];
+}

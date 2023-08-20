@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/constants/image_constants.dart';
-import '../../repository/engineer_repository.dart';
+import '../../repository/user_repository.dart';
 import 'bloc/engineer_bloc.dart';
 
 @RoutePage()
@@ -25,7 +25,7 @@ class _EngineerEditViewState extends State<EngineerEditView> {
 
   @override
   void initState() {
-    _engineerBloc = EngineerBloc(engineerRepository: RepositoryProvider.of<IEngineerRepository>(context));
+    _engineerBloc = EngineerBloc(engineerRepository: RepositoryProvider.of<IUserRepository>(context));
     _engineerBloc.add(EngineerDetailFetch(id: widget.engineerID));
 
     super.initState();

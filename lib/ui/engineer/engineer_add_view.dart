@@ -6,7 +6,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../repository/engineer_repository.dart';
+import '../../repository/user_repository.dart';
 import 'bloc/engineer_bloc.dart';
 
 @RoutePage()
@@ -27,7 +27,7 @@ class _EngineerAddViewState extends State<EngineerAddView> {
 
   @override
   void initState() {
-    _engineerBloc = EngineerBloc(engineerRepository: RepositoryProvider.of<IEngineerRepository>(context));
+    _engineerBloc = EngineerBloc(engineerRepository: RepositoryProvider.of<IUserRepository>(context));
 
     super.initState();
   }
@@ -109,7 +109,7 @@ class _EngineerAddViewState extends State<EngineerAddView> {
             username: engineerUsernameController.text,
             password: engineerPasswordController.text,
             firstName: engineerNameController.text,
-            lastname: engineerNameController.text,
+            lastname: engineerSurnameController.text,
             userRole: 1)));
 
     _engineerBloc.stream.listen((event) {

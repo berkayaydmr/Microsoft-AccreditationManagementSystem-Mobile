@@ -1,7 +1,12 @@
 import 'package:accreditation_management_system/core/extensions/context_extensions.dart';
 import 'package:accreditation_management_system/core/navigation/navigation.dart';
+import 'package:accreditation_management_system/repository/models/login_request_model.dart';
+import 'package:accreditation_management_system/repository/user_repository.dart';
+import 'package:accreditation_management_system/ui/login/bloc/login_bloc.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/constants/image_constants.dart';
 import '../../core/constants/local_storage_constants.dart';
@@ -19,8 +24,11 @@ class _LoginViewState extends State<LoginView> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  late LoginBloc _loginBloc;
+
   @override
   void initState() {
+    _loginBloc = LoginBloc(userRepository: RepositoryProvider.of<IUserRepository>(context));
     super.initState();
   }
 
@@ -51,7 +59,7 @@ class _LoginViewState extends State<LoginView> {
                     child: TextFormField(
                       controller: _usernameController,
                       decoration: InputDecoration(
-                        hintText: 'Username',
+                        hintText: 'Kullanıcı Adı',
                         hintStyle: context.textTheme.titleMedium,
                         border: OutlineInputBorder(
                           borderRadius: context.radiusAll,
@@ -68,7 +76,7 @@ class _LoginViewState extends State<LoginView> {
                       controller: _passwordController,
                       obscureText: true,
                       decoration: InputDecoration(
-                        hintText: 'Password',
+                        hintText: 'Şifre',
                         hintStyle: context.textTheme.titleMedium,
                         border: OutlineInputBorder(
                           borderRadius: context.radiusAll,
@@ -87,21 +95,17 @@ class _LoginViewState extends State<LoginView> {
                 children: [
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: context.radiusAll),
+                        shape: RoundedRectangleBorder(borderRadius: context.radiusAll),
                         fixedSize: Size.fromWidth(context.width),
                       ),
-                      onPressed: () {
-                        context.replaceRoute(DashboardViewRoute(
-                            username: _usernameController.text));
-                      },
+                      onPressed: _login,
                       child: const Text(
                         'Giriş Yap',
                         style: TextStyle(color: Colors.white),
                       )),
                   Column(
                     children: [
-                      TextButton(onPressed: () {}, child: Text('Kayıt Olun')),
+                      TextButton(onPressed: register, child: Text('Kayıt Olun')),
                       TextButton(
                           onPressed: () {
                             context.router.push(EngineerViewRoute());
@@ -119,8 +123,20 @@ class _LoginViewState extends State<LoginView> {
   }
 
   void _login() async {
-    await LocalStorageManager.setString(
-        LocalStorageConstants.USERNAME, _usernameController.text);
-    widget.onResult?.call(true);
+    _loginBloc.add(LoginButtonPressed(loginRequest: LoginRequestModel(email: _usernameController.text, password: _passwordController.text, authenticatorCode: "authCode")));
+
+    _loginBloc.stream.listen((event) {
+      if (event is LoginFailure) {
+        BotToast.showText(text: event.error);
+      }
+
+      if (event is LoginSuccess) {
+        context.replaceRoute(DashboardViewRoute(username: _usernameController.text));
+      }
+    });
+  }
+
+  void register() {
+    context.router.push(EngineerAddViewRoute());
   }
 }

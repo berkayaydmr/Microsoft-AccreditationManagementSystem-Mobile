@@ -1,6 +1,8 @@
 import 'package:accreditation_management_system/core/extensions/context_extensions.dart';
+import 'package:accreditation_management_system/repository/mip_repository.dart';
 import 'package:accreditation_management_system/repository/models/mip.dart';
 import 'package:accreditation_management_system/ui/mip/bloc/mip_bloc.dart';
+import 'package:accreditation_management_system/ui/shared/widget/field_and_value_widget.dart';
 import 'package:accreditation_management_system/ui/shared/widget/learning_path_card_widget.dart';
 import 'package:accreditation_management_system/ui/shared/widget/property_card.dart';
 import 'package:auto_route/annotations.dart';
@@ -24,7 +26,7 @@ class _MipDetailViewState extends State<MipDetailView> {
 
   @override
   void initState() {
-    _mipBloc = MipBloc();
+    _mipBloc = MipBloc(mipRepository: RepositoryProvider.of<IMipRepository>(context));
     super.initState();
   }
 
@@ -41,10 +43,7 @@ class _MipDetailViewState extends State<MipDetailView> {
           BlocBuilder<MipBloc, MipState>(
             bloc: _mipBloc,
             builder: (context, state) {
-              return IconButton(
-                  onPressed: () {},
-                  splashRadius: 20,
-                  icon: const Icon(Icons.verified_outlined));
+              return IconButton(onPressed: () {}, splashRadius: 20, icon: const Icon(Icons.verified_outlined));
             },
           )
         ],
@@ -52,11 +51,11 @@ class _MipDetailViewState extends State<MipDetailView> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            PropertyCard(
-                title: 'Engineers',
-                count: '10',
-                cardColor: context.engineerColor,
-                onTap: () {}),
+            Padding(
+              padding: context.edgeLow,
+              child: FieldAndValueWidget(title: "Name", value: "Mip Name", headTitleColor: context.mipColor),
+            ),
+            PropertyCard(title: 'Engineers', count: '10', cardColor: context.engineerColor, onTap: () {}),
             Container(
               height: context.height * 0.35,
               width: context.width,
@@ -72,12 +71,9 @@ class _MipDetailViewState extends State<MipDetailView> {
 
 Widget buildWithFieldTitle(BuildContext context, String headTitle) {
   List<LearningPathStepResponseModel> learningPaths = [
-    LearningPathStepResponseModel(
-        id: 1, name: "Learning Step 1", isCompleted: true),
-    LearningPathStepResponseModel(
-        id: 2, name: "Learning Step 2", isCompleted: false),
-    LearningPathStepResponseModel(
-        id: 3, name: "Learning Step 3", isCompleted: false),
+    LearningPathStepResponseModel(id: 1, name: "Learning Step 1", isCompleted: true),
+    LearningPathStepResponseModel(id: 2, name: "Learning Step 2", isCompleted: false),
+    LearningPathStepResponseModel(id: 3, name: "Learning Step 3", isCompleted: false),
   ];
 
   return Column(
@@ -94,10 +90,7 @@ Widget buildWithFieldTitle(BuildContext context, String headTitle) {
             scrollDirection: Axis.horizontal,
             itemCount: 5,
             itemBuilder: (context, index) {
-              return LearningPathCardWidget(
-                  learningPathName: "Learning Path $index",
-                  learningSteps: learningPaths,
-                  onTap: () {});
+              return LearningPathCardWidget(learningPathName: "Learning Path $index", learningSteps: learningPaths, onTap: () {});
             }),
       ),
     ],
@@ -107,11 +100,7 @@ Widget buildWithFieldTitle(BuildContext context, String headTitle) {
 Widget buildWithPropertyCard(BuildContext context) {
   return Column(
     children: [
-      PropertyCard(
-          title: 'Engineer',
-          count: '10',
-          cardColor: context.engineerColor,
-          onTap: () {}),
+      PropertyCard(title: 'Engineer', count: '10', cardColor: context.engineerColor, onTap: () {}),
     ],
   );
 }

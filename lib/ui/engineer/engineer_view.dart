@@ -9,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/constants/image_constants.dart';
 import '../../core/navigation/navigation.dart';
-import '../../repository/engineer_repository.dart';
+import '../../repository/user_repository.dart';
 import '../shared/widget/list_card.dart';
 
 @RoutePage()
@@ -21,13 +21,13 @@ class EngineerView extends StatefulWidget {
 }
 
 class _EngineerViewState extends State<EngineerView> {
-  EngineerBloc? _engineersBloc;
+  late EngineerBloc _engineersBloc;
 
   @override
   void initState() {
-    _engineersBloc = EngineerBloc(engineerRepository: RepositoryProvider.of<IEngineerRepository>(context));
+    _engineersBloc = EngineerBloc(engineerRepository: RepositoryProvider.of<IUserRepository>(context));
 
-    _engineersBloc!.add(EngineerListFetch());
+    _engineersBloc.add(EngineerListFetch());
     super.initState();
   }
 
